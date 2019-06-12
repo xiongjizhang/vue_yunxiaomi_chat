@@ -102,18 +102,22 @@
         return
       }
 
+      let chatbot = "chatbot-cn-0pp14yt01000av"  // chatbot-cn-v0h15cemp0006p  chatbot-cn-0pp14yt01000av
+
       let date = new Date()
+      // 当前时间转为utc时间
       let utc_time = date.getUTCFullYear() + '-' + addPreZero(date.getUTCMonth()+1) + '-' + addPreZero(date.getUTCDate()) + 'T' +
         addPreZero(date.getUTCHours()) + ':' + addPreZero(date.getUTCMinutes()) + ':' + addPreZero(date.getUTCSeconds()) + 'Z'
 
       let sign_content = 'GET&%2F&AccessKeyId%3DLTAIUzHm83TGI0Gz%26Action%3DChat%26Format%3Djson' +
-        '%26InstanceId%3Dchatbot-cn-0pp14yt01000av%26SignatureMethod%3DHMAC-SHA1' +
+        '%26InstanceId%3D' + chatbot + '%26SignatureMethod%3DHMAC-SHA1' +
         '%26SignatureNonce%3D' + date.valueOf() +
         '%26SignatureVersion%3D1.0' +
         '%26Timestamp%3D' + encodeURIComponent(encodeURIComponent(utc_time)) + // .replace(':','%253A').replace(':','%253A') +
         '%26Utterance%3D' + encodeURIComponent(encodeURIComponent(this.inputText)) +
         '%26Version%3D2017-10-11'
 
+      // 签名计算
       let signature = Buffer.from(CryptoJS.HmacSHA1(sign_content, 's1HdCHuGJGORPbZ09rNbc8nMOdIQxQ&').toString(), 'hex').toString('base64')
 
       let url = 'https://chatbot.cn-shanghai.aliyuncs.com/?Format=json&Version=2017-10-11' +
@@ -123,7 +127,7 @@
         '&Timestamp=' + encodeURIComponent(utc_time) +
         '&SignatureVersion=1.0' +
         '&SignatureNonce=' + date.valueOf() +
-        '&Action=Chat&InstanceId=chatbot-cn-0pp14yt01000av' +
+        '&Action=Chat&InstanceId=' + chatbot +
         '&Utterance=' + encodeURIComponent(this.inputText)
 
       // console.log(url)
